@@ -2668,23 +2668,22 @@ icppRender();
     heroGone = true;
   }
 
-  var secObs = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      if (e.isIntersecting) {
-        var sec = SECTIONS.filter(function(s){ return s.id === e.target.id; })[0];
-        if (sec && sec.id !== activeId) {
-          activeId = sec.id;
-          render(sec);
-          if (heroGone) { rail.classList.add('visible'); rail.removeAttribute('aria-hidden'); }
-        }
-      }
+  function updateActiveSection() {
+    var triggerY = window.scrollY + window.innerHeight * 0.35;
+    var current = null;
+    SECTIONS.forEach(function(s) {
+      var el = document.getElementById(s.id);
+      if (el && el.offsetTop <= triggerY) current = s;
     });
-  }, { threshold: 0.15 });
+    if (current && current.id !== activeId) {
+      activeId = current.id;
+      render(current);
+      if (heroGone) { rail.classList.add('visible'); rail.removeAttribute('aria-hidden'); }
+    }
+  }
 
-  SECTIONS.forEach(function(s){
-    var el = document.getElementById(s.id);
-    if (el) secObs.observe(el);
-  });
+  window.addEventListener('scroll', updateActiveSection, { passive: true });
+  updateActiveSection();
 })();
 
 /* PROGRESS BAR */
