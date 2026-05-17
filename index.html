@@ -2630,13 +2630,42 @@ icppRender();
   ];
 
   var activeId = null;
+  var heroGone = false;
+
+  function scrollToSection(id) {
+    var el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  }
 
   function render(sec) {
     active.innerHTML = '<span class="ctx-active-num">' + sec.label.toUpperCase() + '</span><p class="ctx-active-thesis">' + sec.thesis + '</p>';
     others.innerHTML = SECTIONS
       .filter(function(s){ return s.id !== sec.id; })
-      .map(function(s){ return '<li><span style="font-size:10px;color:var(--text-4);cursor:pointer;" onclick="document.getElementById(\"' + s.id + '\").scrollIntoView({behavior:\"smooth\"});">' + s.label + '</span></li>'; })
+      .map(function(s){ return '<li><span class="ctx-nav-item" data-target="' + s.id + '" style="font-size:10px;color:var(--text-4);cursor:pointer;">' + s.label + '</span></li>'; })
       .join('');
+    others.querySelectorAll('.ctx-nav-item').forEach(function(el) {
+      el.addEventListener('click', function(){ scrollToSection(this.getAttribute('data-target')); });
+    });
+  }
+
+  /* Hide rail while hero is visible, show once scrolled past it */
+  var hero = document.querySelector('.hero');
+  if (hero) {
+    var heroObs = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (!e.isIntersecting) {
+          heroGone = true;
+          if (activeId) { rail.classList.add('visible'); rail.removeAttribute('aria-hidden'); }
+        } else {
+          heroGone = false;
+          rail.classList.remove('visible');
+          rail.setAttribute('aria-hidden', 'true');
+        }
+      });
+    }, { threshold: 0.05 });
+    heroObs.observe(hero);
+  } else {
+    heroGone = true;
   }
 
   var secObs = new IntersectionObserver(function(entries){
@@ -2645,9 +2674,8 @@ icppRender();
         var sec = SECTIONS.filter(function(s){ return s.id === e.target.id; })[0];
         if (sec && sec.id !== activeId) {
           activeId = sec.id;
-          rail.classList.add('visible');
-          rail.removeAttribute('aria-hidden');
           render(sec);
+          if (heroGone) { rail.classList.add('visible'); rail.removeAttribute('aria-hidden'); }
         }
       }
     });
