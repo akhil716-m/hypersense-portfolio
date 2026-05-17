@@ -445,6 +445,152 @@ h3:first-child { margin-top: 0; }
 .reflection-item-label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-4); margin-bottom: 12px; }
 .reflection-item p { font-size: 14px; color: var(--text-2); margin: 0; max-width: 100%; line-height: 1.7; }
 
+/* ── LAPTOP PROTOTYPE ── */
+.laptop-scene {
+  perspective: 1600px;
+  perspective-origin: 50% 20%;
+  padding: 60px 0 80px;
+  display: flex;
+  justify-content: center;
+}
+.laptop-outer {
+  width: 720px;
+  transform-style: preserve-3d;
+  transform: rotateX(4deg) rotateY(-2deg);
+  transition: transform 0.6s ease;
+  position: relative;
+}
+.laptop-outer:hover { transform: rotateX(2deg) rotateY(0deg); }
+.laptop-lid {
+  width: 100%;
+  height: 450px;
+  transform-origin: bottom center;
+  transform: rotateX(-96deg);
+  transition: transform 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform-style: preserve-3d;
+  position: relative;
+  z-index: 2;
+}
+.laptop-lid.open { transform: rotateX(-26deg); }
+.laptop-bezel {
+  width: 100%;
+  height: 100%;
+  background: #141413;
+  border-radius: 14px 14px 2px 2px;
+  border: 2px solid #272725;
+  border-bottom: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 14px 14px 0;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.04),
+    0 -2px 0 #0a0a09;
+  position: relative;
+  overflow: hidden;
+}
+.laptop-camera-bar {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+  flex-shrink: 0;
+}
+.laptop-camera {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #0e0e0d;
+  border: 1px solid #222;
+  box-shadow: 0 0 0 1px #1a1a18;
+}
+.laptop-display {
+  width: 100%;
+  flex: 1;
+  background: #050504;
+  border-radius: 4px 4px 0 0;
+  overflow: hidden;
+  position: relative;
+  transition: box-shadow 1.2s ease 0.4s;
+}
+.laptop-lid.open .laptop-display {
+  box-shadow: 0 0 120px rgba(201,149,42,0.08), 0 0 40px rgba(255,255,255,0.03);
+}
+.laptop-display iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+.proto-placeholder {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  background: radial-gradient(ellipse at 50% 40%, #111110 0%, #060605 70%);
+  position: relative;
+  overflow: hidden;
+}
+.proto-placeholder::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.02) 39px, rgba(255,255,255,0.02) 40px),
+              repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.02) 39px, rgba(255,255,255,0.02) 40px);
+}
+.proto-placeholder-content { text-align: center; position: relative; z-index: 1; }
+.proto-placeholder-logo {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 36px; font-weight: 300;
+  color: rgba(255,255,255,0.12);
+  letter-spacing: -0.01em;
+  margin-bottom: 20px;
+}
+.proto-placeholder-logo em { font-style: italic; color: rgba(201,149,42,0.4); }
+.proto-placeholder-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(255,255,255,0.18);
+}
+.proto-placeholder-tag::before, .proto-placeholder-tag::after {
+  content: ''; display: block; width: 24px; height: 1px;
+  background: rgba(255,255,255,0.12);
+}
+.laptop-hinge-bar {
+  height: 5px;
+  background: linear-gradient(to bottom, #1e1e1c, #161614);
+  border-left: 2px solid #272725;
+  border-right: 2px solid #272725;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  position: relative; z-index: 3;
+}
+.laptop-base {
+  height: 38px;
+  background: linear-gradient(to bottom, #1c1c1a 0%, #161614 60%, #111110 100%);
+  border-radius: 0 0 14px 14px;
+  border: 2px solid #272725;
+  border-top: none;
+  box-shadow:
+    0 12px 60px rgba(0,0,0,0.7),
+    0 4px 16px rgba(0,0,0,0.5),
+    inset 0 -1px 0 rgba(255,255,255,0.03);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 5px; padding: 0 28px;
+}
+.laptop-keyboard-area {
+  width: 80%; height: 14px;
+  background: repeating-linear-gradient(90deg,
+    rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 14px,
+    transparent 14px, transparent 16px
+  );
+  border-radius: 2px;
+}
+.laptop-trackpad-area {
+  width: 18%; height: 6px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 3px;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+@media(max-width:800px){ .laptop-scene { display: none; } }
+
 /* ANIMATIONS */
 @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes scrollPulse { 0%,100%{opacity:.4;transform:scaleY(1)} 50%{opacity:1;transform:scaleY(1.1)} }
@@ -2559,6 +2705,39 @@ icppRender();
 </div>
 </section>
 
+<!-- ═══════════════════════ 10 — PROTOTYPE ═══════════════════════ -->
+<section id="prototype-section" style="padding:140px 0 60px;overflow:hidden;">
+<div class="wrap" style="text-align:center;">
+  <div class="section-label reveal">10 — Experience the Product</div>
+  <h2 class="display reveal">The full product. <em>In your hands.</em></h2>
+  <p class="reveal" style="font-size:17px;line-height:1.8;color:var(--text-2);max-width:560px;margin:24px auto 80px;">Five months of design decisions, distilled into one working prototype. Click through the flows — Overview, Drill-Down, Forecast.</p>
+</div>
+
+<div class="laptop-scene reveal">
+  <div class="laptop-outer">
+    <div class="laptop-lid" id="proto-lid">
+      <div class="laptop-bezel">
+        <div class="laptop-camera-bar"><div class="laptop-camera"></div></div>
+        <div class="laptop-display">
+          <!-- Replace the div below with: <iframe src="YOUR_PROTOTYPE_URL" allowfullscreen></iframe> -->
+          <div class="proto-placeholder">
+            <div class="proto-placeholder-content">
+              <div class="proto-placeholder-logo">Hyper<em>Sense</em></div>
+              <div class="proto-placeholder-tag">Interactive Prototype</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="laptop-hinge-bar"></div>
+    <div class="laptop-base">
+      <div class="laptop-keyboard-area"></div>
+      <div class="laptop-trackpad-area"></div>
+    </div>
+  </div>
+</div>
+</section>
+
 <!-- ═══════════════════════ 09 — REFLECTION ═══════════════════════ -->
 <section>
 <div class="wrap">
@@ -2684,6 +2863,19 @@ icppRender();
 
   window.addEventListener('scroll', updateActiveSection, { passive: true });
   updateActiveSection();
+})();
+
+/* LAPTOP OPEN ANIMATION */
+(function(){
+  var lid = document.getElementById('proto-lid');
+  if (!lid) return;
+  var obs = new IntersectionObserver(function(entries){
+    if (entries[0].isIntersecting) {
+      setTimeout(function(){ lid.classList.add('open'); }, 300);
+      obs.disconnect();
+    }
+  }, { threshold: 0.3 });
+  obs.observe(lid.closest('.laptop-scene') || lid);
 })();
 
 /* PROGRESS BAR */
