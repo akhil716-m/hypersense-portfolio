@@ -1925,8 +1925,148 @@ icppRender();
     </li>
   </ul>
 
+  <!-- ── KNOWLEDGE GRAPH ── -->
+  <div class="reveal" style="margin-top:96px;">
+    <p style="font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);margin-bottom:12px;">The architecture of questions</p>
+    <h3 style="font-family:var(--ff-display);font-size:clamp(22px,3vw,32px);font-weight:300;color:var(--text-1);margin:0 0 14px;line-height:1.2;">Five modules. One investigation flow.</h3>
+    <p style="font-size:15px;color:var(--text-3);line-height:1.75;max-width:560px;margin-bottom:48px;">Every node is a question the product was designed to answer. HyperSense connects them into a single coherent narrative.</p>
+    <canvas id="hs-graph" style="width:100%;height:auto;border-radius:20px;display:block;" aria-label="HyperSense knowledge graph — five modules and their sub-questions"></canvas>
+    <p style="font-size:12px;color:var(--text-3);opacity:.5;text-align:center;margin-top:18px;letter-spacing:.05em;">hover to explore connections</p>
+  </div>
+
 </div>
 </section>
+
+<script>
+(function(){
+  var canvas = document.getElementById('hs-graph');
+  if(!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W=1060, H=700;
+  canvas.width=W; canvas.height=H;
+  var CX=W/2, CY=H/2-10;
+  var R_MOD=175, R_Q=280;
+  var GOLD='#c9952a';
+
+  var mods=[
+    {id:'overview',  label:'Overview',   q:'What\'s my cost story at a glance?',         angle:-Math.PI/2,
+     subs:['What am I paying?','What is driving those costs?','Where should I investigate?']},
+    {id:'observe',   label:'Observe',    q:'Is what\'s happening expected or unusual?',   angle:-Math.PI/2+2*Math.PI/5,
+     subs:['Which region contributes most?','Which processor is costly?','Which fee is driving the increase?','Where to investigate next?']},
+    {id:'deviations',label:'Deviations', q:'What unexpected changes stand out?',          angle:-Math.PI/2+4*Math.PI/5,
+     subs:['Downgrades & Penalties','Organic Growth','Non-Transactional Fees']},
+    {id:'audit',     label:'Audit',      q:'Did we pay what we were supposed to?',        angle:-Math.PI/2+6*Math.PI/5,
+     subs:['What fees appear incorrect?','What should have been charged?','How large is the variance?','Which transactions caused it?']},
+    {id:'forecast',  label:'Forecast',   q:'What\'s coming next, and how do we prepare?', angle:-Math.PI/2+8*Math.PI/5,
+     subs:['What updates are coming?','Which ones affect us?','What is the projected impact?']}
+  ];
+
+  var nodes=[], edges=[], nodeMap={};
+  var center={id:'center',label:'HyperSense',x:CX,y:CY,bx:CX,by:CY,r:14,type:'center'};
+  nodes.push(center); nodeMap['center']=center;
+
+  mods.forEach(function(mod,mi){
+    var mx=CX+R_MOD*Math.cos(mod.angle), my=CY+R_MOD*Math.sin(mod.angle);
+    var mn={id:mod.id,label:mod.label,subLabel:mod.q,x:mx,y:my,bx:mx,by:my,r:8,type:'module',angle:mod.angle,mi:mi};
+    nodes.push(mn); nodeMap[mod.id]=mn;
+    edges.push({from:'center',to:mod.id,type:'module'});
+    var nq=mod.subs.length, spread=nq<=2?0.28:nq<=3?0.48:0.54;
+    mod.subs.forEach(function(sub,qi){
+      var qa= nq===1 ? mod.angle : mod.angle-spread+(qi/(nq-1))*spread*2;
+      var qx=CX+R_Q*Math.cos(qa), qy=CY+R_Q*Math.sin(qa);
+      var qid=mod.id+'_q'+qi;
+      var qn={id:qid,label:sub,x:qx,y:qy,bx:qx,by:qy,r:3.5,type:'question',parentId:mod.id};
+      nodes.push(qn); nodeMap[qid]=qn;
+      edges.push({from:mod.id,to:qid,type:'question'});
+    });
+  });
+
+  var hovId=null, t=0;
+  function getConn(id){var s=new Set([id]); edges.forEach(function(e){if(e.from===id)s.add(e.to);if(e.to===id)s.add(e.from);}); return s;}
+
+  canvas.addEventListener('mousemove',function(e){
+    var rect=canvas.getBoundingClientRect();
+    var sx=canvas.width/rect.width, sy=canvas.height/rect.height;
+    var mx=(e.clientX-rect.left)*sx, my=(e.clientY-rect.top)*sy;
+    hovId=null;
+    for(var i=0;i<nodes.length;i++){
+      var n=nodes[i], dx=mx-n.x, dy=my-n.y;
+      var hit=n.type==='question'?14:n.r+10;
+      if(dx*dx+dy*dy<hit*hit){hovId=n.id;break;}
+    }
+    canvas.style.cursor=hovId?'pointer':'default';
+  });
+  canvas.addEventListener('mouseleave',function(){hovId=null;canvas.style.cursor='default';});
+
+  function lpos(n){
+    var dx=n.bx-CX, dy=n.by-CY, d=Math.sqrt(dx*dx+dy*dy)||1;
+    var nx=dx/d, ny=dy/d;
+    if(n.type==='center') return {x:n.x,y:n.y+n.r+17,align:'center',base:'top'};
+    var pad=n.type==='module'?17:10;
+    return {x:n.x+nx*pad, y:n.y+ny*pad, align:nx>0.38?'left':nx<-0.38?'right':'center', base:ny>0.3?'top':ny<-0.3?'bottom':'middle'};
+  }
+
+  function frame(){
+    t+=0.006;
+    ctx.clearRect(0,0,W,H);
+    nodes.forEach(function(n,i){
+      var f=0.22+i*0.045, amp=n.type==='center'?1.2:n.type==='module'?2.8:4.5;
+      n.x=n.bx+Math.sin(t*f+i)*amp;
+      n.y=n.by+Math.cos(t*f*0.85+i*1.3)*amp;
+    });
+    var conn=hovId?getConn(hovId):null;
+
+    // edges
+    edges.forEach(function(e){
+      var fn=nodeMap[e.from], tn=nodeMap[e.to]; if(!fn||!tn) return;
+      var act=!conn||(conn.has(e.from)&&conn.has(e.to));
+      ctx.beginPath(); ctx.moveTo(fn.x,fn.y); ctx.lineTo(tn.x,tn.y);
+      if(e.type==='module'){ctx.strokeStyle=act?'rgba(201,149,42,0.42)':'rgba(201,149,42,0.06)';ctx.lineWidth=1.2;}
+      else{ctx.strokeStyle=act?'rgba(255,255,255,0.18)':'rgba(255,255,255,0.04)';ctx.lineWidth=0.6;}
+      ctx.stroke();
+    });
+
+    // nodes + labels
+    nodes.forEach(function(n){
+      var dim=conn&&!conn.has(n.id), a=dim?0.1:1;
+      if(n.type==='center'){
+        var g1=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,55);
+        g1.addColorStop(0,'rgba(201,149,42,0.18)'); g1.addColorStop(1,'rgba(201,149,42,0)');
+        ctx.beginPath();ctx.arc(n.x,n.y,55,0,Math.PI*2);ctx.fillStyle=g1;ctx.fill();
+        var g2=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,24);
+        g2.addColorStop(0,'rgba(201,149,42,0.55)'); g2.addColorStop(1,'rgba(201,149,42,0)');
+        ctx.beginPath();ctx.arc(n.x,n.y,24,0,Math.PI*2);ctx.fillStyle=g2;ctx.fill();
+        ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,Math.PI*2);ctx.fillStyle=GOLD;ctx.fill();
+        ctx.font='700 12px "DM Sans",system-ui,sans-serif';
+        ctx.textAlign='center';ctx.textBaseline='top';
+        ctx.fillStyle='rgba(255,255,255,0.82)';ctx.fillText('HyperSense',n.x,n.y+n.r+14);
+        ctx.textBaseline='alphabetic';
+      } else if(n.type==='module'){
+        var gm=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,30);
+        gm.addColorStop(0,'rgba(201,149,42,'+(0.22*a)+')'); gm.addColorStop(1,'rgba(201,149,42,0)');
+        ctx.beginPath();ctx.arc(n.x,n.y,30,0,Math.PI*2);ctx.fillStyle=gm;ctx.fill();
+        ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+        ctx.fillStyle='rgba(201,149,42,'+a+')';ctx.fill();
+        var lp=lpos(n);
+        ctx.font='600 11px "DM Sans",system-ui,sans-serif';
+        ctx.textAlign=lp.align;ctx.textBaseline=lp.base;
+        ctx.fillStyle='rgba(255,255,255,'+(0.88*a)+')';ctx.fillText(n.label,lp.x,lp.y);
+        ctx.textBaseline='alphabetic';
+      } else {
+        ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+        ctx.fillStyle='rgba(155,155,175,'+(0.5*a)+')';ctx.fill();
+        var lp2=lpos(n);
+        ctx.font='12px "DM Sans",system-ui,sans-serif';
+        ctx.textAlign=lp2.align;ctx.textBaseline=lp2.base;
+        ctx.fillStyle='rgba(185,185,205,'+(0.65*a)+')';ctx.fillText(n.label,lp2.x,lp2.y);
+        ctx.textBaseline='alphabetic';
+      }
+    });
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
+</script>
 
 <!-- ═══════════════════════ 09 — UI DESIGN: OVERVIEW ═══════════════════════ -->
 <section id="ui-design">
@@ -2862,7 +3002,7 @@ icppRender();
     active.innerHTML = '<span class="ctx-active-num">' + sec.label.toUpperCase() + '</span><p class="ctx-active-thesis">' + sec.thesis + '</p>';
     others.innerHTML = SECTIONS
       .filter(function(s){ return s.id !== sec.id; })
-      .map(function(s){ return '<li><span class="ctx-nav-item" data-target="' + s.id + '" style="font-size:10px;color:var(--text-4);cursor:pointer;">' + s.label + '</span></li>'; })
+      .map(function(s){ return '<li><span class="ctx-nav-item" data-target="' + s.id + '" style="font-size:10px;color:var(--text-3);cursor:pointer;">' + s.label + '</span></li>'; })
       .join('');
     others.querySelectorAll('.ctx-nav-item').forEach(function(el) {
       el.addEventListener('click', function(){ scrollToSection(this.getAttribute('data-target')); });
