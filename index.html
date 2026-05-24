@@ -461,15 +461,9 @@ h3:first-child { margin-top: 0; }
 /* Screen content inside SVG foreignObject */
 .mbpro-screen {
   width: 100%; height: 100%;
-  display: flex; align-items: center; justify-content: center;
-  background: radial-gradient(ellipse at 50% 30%, #111110 0%, #060605 100%);
+  background: #000;
   position: relative; overflow: hidden;
-}
-.mbpro-screen::before {
-  content: ''; position: absolute; inset: 0;
-  background:
-    repeating-linear-gradient(0deg, transparent, transparent 47px, rgba(255,255,255,0.012) 47px, rgba(255,255,255,0.012) 48px),
-    repeating-linear-gradient(90deg, transparent, transparent 47px, rgba(255,255,255,0.012) 47px, rgba(255,255,255,0.012) 48px);
+  display: block;
 }
 .proto-placeholder-content { text-align: center; position: relative; z-index: 1; }
 .proto-placeholder-logo {
@@ -3011,11 +3005,10 @@ icppRender();
       <path d="M124.5 32C124.5 24.268 130.768 18 138.5 18H1077.5C1085.23 18 1091.5 24.268 1091.5 32V646H124.5V32Z" fill="#050505"/>
       <!-- ↓ SCREEN CONTENT — swap inner div for <iframe src="..."> when prototype is ready -->
       <foreignObject x="124.5" y="18" width="967" height="628" clip-path="url(#screen-clip)">
-        <div xmlns="http://www.w3.org/1999/xhtml" class="mbpro-screen">
-          <div class="proto-placeholder-content">
-            <div class="proto-placeholder-logo">Hyper<em>Sense</em></div>
-            <div class="proto-placeholder-tag">Interactive Prototype</div>
-          </div>
+        <div xmlns="http://www.w3.org/1999/xhtml" class="mbpro-screen" style="background:#000;overflow:hidden;padding:0;margin:0;">
+          <video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;display:block;border:none;">
+            <source src="proto.mp4" type="video/mp4">
+          </video>
         </div>
       </foreignObject>
       <!-- Notch pill -->
