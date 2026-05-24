@@ -3005,10 +3005,114 @@ icppRender();
       <path d="M124.5 32C124.5 24.268 130.768 18 138.5 18H1077.5C1085.23 18 1091.5 24.268 1091.5 32V646H124.5V32Z" fill="#050505"/>
       <!-- ↓ SCREEN CONTENT — swap inner div for <iframe src="..."> when prototype is ready -->
       <foreignObject x="124.5" y="18" width="967" height="628" clip-path="url(#screen-clip)">
-        <div xmlns="http://www.w3.org/1999/xhtml" class="mbpro-screen" style="background:#000;overflow:hidden;padding:0;margin:0;">
-          <video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;display:block;border:none;">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="mbpro-screen" style="background:#000;overflow:hidden;padding:0;margin:0;position:relative;" id="proto-wrap">
+
+          <video id="proto-vid" playsinline style="width:100%;height:100%;object-fit:cover;display:block;border:none;" preload="auto">
             <source src="proto.mp4" type="video/mp4">
           </video>
+
+          <!-- custom controls overlay -->
+          <div id="proto-ctrl" style="position:absolute;bottom:0;left:0;right:0;padding:10px 14px 10px;background:linear-gradient(to top,rgba(0,0,0,.75) 0%,transparent 100%);opacity:0;transition:opacity .25s;pointer-events:none;">
+
+            <!-- progress bar -->
+            <div id="proto-prog-track" style="width:100%;height:3px;background:rgba(255,255,255,.2);border-radius:2px;cursor:pointer;margin-bottom:10px;position:relative;">
+              <div id="proto-prog-fill" style="height:100%;width:0%;background:rgba(255,255,255,.85);border-radius:2px;pointer-events:none;"></div>
+            </div>
+
+            <!-- buttons row -->
+            <div style="display:flex;align-items:center;justify-content:center;gap:18px;">
+
+              <!-- rewind 10s -->
+              <button id="proto-rw" title="−10s" style="background:none;border:none;cursor:pointer;padding:4px;display:flex;align-items:center;justify-content:center;opacity:.85;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" fill="white"/>
+                  <text x="12" y="14.5" text-anchor="middle" font-size="5.5" fill="white" font-family="sans-serif" font-weight="600">10</text>
+                </svg>
+              </button>
+
+              <!-- play / pause -->
+              <button id="proto-pp" title="Play / Pause" style="background:rgba(255,255,255,.15);border:none;cursor:pointer;padding:0;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);">
+                <svg id="proto-pause-icon" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <rect x="2" y="1" width="3.5" height="12" rx="1" fill="white"/>
+                  <rect x="8.5" y="1" width="3.5" height="12" rx="1" fill="white"/>
+                </svg>
+                <svg id="proto-play-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" style="display:none;">
+                  <path d="M3 1.5L13 7L3 12.5V1.5Z" fill="white"/>
+                </svg>
+              </button>
+
+              <!-- forward 10s -->
+              <button id="proto-fw" title="+10s" style="background:none;border:none;cursor:pointer;padding:4px;display:flex;align-items:center;justify-content:center;opacity:.85;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 5V1l5 5-5 5V7c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6h2c0 4.42-3.58 8-8 8s-8-3.58-8-8 3.58-8 8-8z" fill="white"/>
+                  <text x="12" y="14.5" text-anchor="middle" font-size="5.5" fill="white" font-family="sans-serif" font-weight="600">10</text>
+                </svg>
+              </button>
+
+            </div>
+          </div>
+
+          <script>
+          (function(){
+            var vid=document.getElementById('proto-vid');
+            var ctrl=document.getElementById('proto-ctrl');
+            var wrap=document.getElementById('proto-wrap');
+            var fill=document.getElementById('proto-prog-fill');
+            var track=document.getElementById('proto-prog-track');
+            var ppBtn=document.getElementById('proto-pp');
+            var pauseIcon=document.getElementById('proto-pause-icon');
+            var playIcon=document.getElementById('proto-play-icon');
+            var hideTimer;
+
+            // Start playing
+            vid.play().catch(function(){});
+
+            function showCtrl(){
+              ctrl.style.opacity='1';
+              ctrl.style.pointerEvents='auto';
+              clearTimeout(hideTimer);
+              hideTimer=setTimeout(function(){
+                ctrl.style.opacity='0';
+                ctrl.style.pointerEvents='none';
+              },2500);
+            }
+
+            // Show on hover
+            wrap.addEventListener('mousemove', showCtrl);
+            wrap.addEventListener('mouseenter', showCtrl);
+            wrap.addEventListener('mouseleave', function(){
+              clearTimeout(hideTimer);
+              ctrl.style.opacity='0';
+              ctrl.style.pointerEvents='none';
+            });
+
+            // Play / Pause
+            ppBtn.addEventListener('click', function(){
+              if(vid.paused){ vid.play(); } else { vid.pause(); }
+            });
+            vid.addEventListener('play', function(){
+              pauseIcon.style.display=''; playIcon.style.display='none';
+            });
+            vid.addEventListener('pause', function(){
+              pauseIcon.style.display='none'; playIcon.style.display='';
+            });
+
+            // Rewind / Forward
+            document.getElementById('proto-rw').addEventListener('click',function(){ vid.currentTime=Math.max(0,vid.currentTime-10); });
+            document.getElementById('proto-fw').addEventListener('click',function(){ vid.currentTime=Math.min(vid.duration||Infinity,vid.currentTime+10); });
+
+            // Progress bar
+            vid.addEventListener('timeupdate',function(){
+              if(vid.duration) fill.style.width=(vid.currentTime/vid.duration*100)+'%';
+            });
+            track.addEventListener('click',function(e){
+              var rect=track.getBoundingClientRect();
+              var pct=(e.clientX-rect.left)/rect.width;
+              if(vid.duration) vid.currentTime=pct*vid.duration;
+            });
+          })();
+          </script>
+
         </div>
       </foreignObject>
       <!-- Notch pill -->
