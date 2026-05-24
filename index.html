@@ -3011,44 +3011,47 @@ icppRender();
             <source src="proto.mp4" type="video/mp4">
           </video>
 
-          <!-- custom controls overlay -->
-          <div id="proto-ctrl" style="position:absolute;bottom:0;left:0;right:0;padding:10px 14px 10px;background:linear-gradient(to top,rgba(0,0,0,.75) 0%,transparent 100%);opacity:0;transition:opacity .25s;pointer-events:none;">
-
-            <!-- progress bar -->
-            <div id="proto-prog-track" style="width:100%;height:3px;background:rgba(255,255,255,.2);border-radius:2px;cursor:pointer;margin-bottom:10px;position:relative;">
-              <div id="proto-prog-fill" style="height:100%;width:0%;background:rgba(255,255,255,.85);border-radius:2px;pointer-events:none;"></div>
-            </div>
-
-            <!-- buttons row -->
-            <div style="display:flex;align-items:center;justify-content:center;gap:18px;">
+          <!-- centre controls -->
+          <div id="proto-ctrl" style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;opacity:0;transition:opacity .25s;pointer-events:none;">
+            <div style="display:flex;align-items:center;justify-content:center;gap:28px;">
 
               <!-- rewind 10s -->
-              <button id="proto-rw" title="−10s" style="background:none;border:none;cursor:pointer;padding:4px;display:flex;align-items:center;justify-content:center;opacity:.85;">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                  <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" fill="white"/>
-                  <text x="12" y="14.5" text-anchor="middle" font-size="5.5" fill="white" font-family="sans-serif" font-weight="600">10</text>
+              <button id="proto-rw" style="background:rgba(0,0,0,.45);backdrop-filter:blur(6px);border:1.5px solid rgba(255,255,255,.18);border-radius:50%;width:52px;height:52px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2px;padding:0;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                  <path d="M12.5 3a9 9 0 1 0 9 9h-2a7 7 0 1 1-7-7V3z" fill="white"/>
+                  <path d="M12.5 3L8 7.5l4.5 4.5V3z" fill="white"/>
                 </svg>
+                <span style="font-size:8px;color:white;font-family:sans-serif;font-weight:600;letter-spacing:.03em;line-height:1;">10s</span>
               </button>
 
               <!-- play / pause -->
-              <button id="proto-pp" title="Play / Pause" style="background:rgba(255,255,255,.15);border:none;cursor:pointer;padding:0;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);">
-                <svg id="proto-pause-icon" width="14" height="14" viewBox="0 0 14 14" fill="none">
-                  <rect x="2" y="1" width="3.5" height="12" rx="1" fill="white"/>
-                  <rect x="8.5" y="1" width="3.5" height="12" rx="1" fill="white"/>
+              <button id="proto-pp" style="background:rgba(201,149,42,.9);backdrop-filter:blur(6px);border:none;border-radius:50%;width:66px;height:66px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;box-shadow:0 4px 20px rgba(201,149,42,.4);">
+                <svg id="proto-pause-icon" width="22" height="22" viewBox="0 0 22 22" fill="none">
+                  <rect x="4" y="2" width="5" height="18" rx="1.5" fill="white"/>
+                  <rect x="13" y="2" width="5" height="18" rx="1.5" fill="white"/>
                 </svg>
-                <svg id="proto-play-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" style="display:none;">
-                  <path d="M3 1.5L13 7L3 12.5V1.5Z" fill="white"/>
+                <svg id="proto-play-icon" width="22" height="22" viewBox="0 0 22 22" fill="none" style="display:none;margin-left:3px;">
+                  <path d="M4 2L20 11L4 20V2Z" fill="white"/>
                 </svg>
               </button>
 
               <!-- forward 10s -->
-              <button id="proto-fw" title="+10s" style="background:none;border:none;cursor:pointer;padding:4px;display:flex;align-items:center;justify-content:center;opacity:.85;">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                  <path d="M12 5V1l5 5-5 5V7c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6h2c0 4.42-3.58 8-8 8s-8-3.58-8-8 3.58-8 8-8z" fill="white"/>
-                  <text x="12" y="14.5" text-anchor="middle" font-size="5.5" fill="white" font-family="sans-serif" font-weight="600">10</text>
+              <button id="proto-fw" style="background:rgba(0,0,0,.45);backdrop-filter:blur(6px);border:1.5px solid rgba(255,255,255,.18);border-radius:50%;width:52px;height:52px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2px;padding:0;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                  <path d="M11.5 3a9 9 0 1 1-9 9h2a7 7 0 1 0 7-7V3z" fill="white"/>
+                  <path d="M11.5 3L16 7.5l-4.5 4.5V3z" fill="white"/>
                 </svg>
+                <span style="font-size:8px;color:white;font-family:sans-serif;font-weight:600;letter-spacing:.03em;line-height:1;">10s</span>
               </button>
 
+            </div>
+          </div>
+
+          <!-- progress bar — always at bottom -->
+          <div id="proto-prog-wrap" style="position:absolute;bottom:0;left:0;right:0;padding:0 0 14px;opacity:0;transition:opacity .25s;pointer-events:none;">
+            <div id="proto-prog-track" style="margin:0 16px;height:4px;background:rgba(255,255,255,.18);border-radius:4px;cursor:pointer;position:relative;">
+              <div id="proto-prog-fill" style="height:100%;width:0%;background:#c9952a;border-radius:4px;pointer-events:none;transition:width .1s linear;"></div>
+              <div id="proto-prog-thumb" style="position:absolute;top:50%;right:auto;width:10px;height:10px;border-radius:50%;background:#c9952a;transform:translate(-50%,-50%);left:0%;pointer-events:none;box-shadow:0 0 6px rgba(201,149,42,.6);"></div>
             </div>
           </div>
 
@@ -3056,58 +3059,70 @@ icppRender();
           (function(){
             var vid=document.getElementById('proto-vid');
             var ctrl=document.getElementById('proto-ctrl');
+            var progWrap=document.getElementById('proto-prog-wrap');
             var wrap=document.getElementById('proto-wrap');
             var fill=document.getElementById('proto-prog-fill');
+            var thumb=document.getElementById('proto-prog-thumb');
             var track=document.getElementById('proto-prog-track');
             var ppBtn=document.getElementById('proto-pp');
             var pauseIcon=document.getElementById('proto-pause-icon');
             var playIcon=document.getElementById('proto-play-icon');
             var hideTimer;
 
-            // Start playing
             vid.play().catch(function(){});
 
             function showCtrl(){
-              ctrl.style.opacity='1';
-              ctrl.style.pointerEvents='auto';
+              ctrl.style.opacity='1'; ctrl.style.pointerEvents='auto';
+              progWrap.style.opacity='1'; progWrap.style.pointerEvents='auto';
               clearTimeout(hideTimer);
               hideTimer=setTimeout(function(){
-                ctrl.style.opacity='0';
-                ctrl.style.pointerEvents='none';
+                if(!vid.paused){
+                  ctrl.style.opacity='0'; ctrl.style.pointerEvents='none';
+                  progWrap.style.opacity='0'; progWrap.style.pointerEvents='none';
+                }
               },2500);
             }
 
-            // Show on hover
             wrap.addEventListener('mousemove', showCtrl);
             wrap.addEventListener('mouseenter', showCtrl);
             wrap.addEventListener('mouseleave', function(){
               clearTimeout(hideTimer);
-              ctrl.style.opacity='0';
-              ctrl.style.pointerEvents='none';
+              ctrl.style.opacity='0'; ctrl.style.pointerEvents='none';
+              progWrap.style.opacity='0'; progWrap.style.pointerEvents='none';
             });
 
-            // Play / Pause
-            ppBtn.addEventListener('click', function(){
-              if(vid.paused){ vid.play(); } else { vid.pause(); }
+            // Keep controls visible while paused
+            vid.addEventListener('pause', function(){
+              clearTimeout(hideTimer);
+              ctrl.style.opacity='1'; ctrl.style.pointerEvents='auto';
+              progWrap.style.opacity='1'; progWrap.style.pointerEvents='auto';
+              pauseIcon.style.display='none'; playIcon.style.display='';
             });
             vid.addEventListener('play', function(){
               pauseIcon.style.display=''; playIcon.style.display='none';
             });
-            vid.addEventListener('pause', function(){
-              pauseIcon.style.display='none'; playIcon.style.display='';
+
+            ppBtn.addEventListener('click', function(){
+              if(vid.paused){ vid.play(); } else { vid.pause(); }
             });
 
-            // Rewind / Forward
-            document.getElementById('proto-rw').addEventListener('click',function(){ vid.currentTime=Math.max(0,vid.currentTime-10); });
-            document.getElementById('proto-fw').addEventListener('click',function(){ vid.currentTime=Math.min(vid.duration||Infinity,vid.currentTime+10); });
+            document.getElementById('proto-rw').addEventListener('click',function(){
+              vid.currentTime=Math.max(0,vid.currentTime-10);
+            });
+            document.getElementById('proto-fw').addEventListener('click',function(){
+              vid.currentTime=Math.min(vid.duration||Infinity,vid.currentTime+10);
+            });
 
-            // Progress bar
+            // Progress + thumb
             vid.addEventListener('timeupdate',function(){
-              if(vid.duration) fill.style.width=(vid.currentTime/vid.duration*100)+'%';
+              if(!vid.duration) return;
+              var pct=vid.currentTime/vid.duration*100;
+              fill.style.width=pct+'%';
+              thumb.style.left=pct+'%';
             });
             track.addEventListener('click',function(e){
               var rect=track.getBoundingClientRect();
-              var pct=(e.clientX-rect.left)/rect.width;
+              var pct=Math.max(0,Math.min(1,(e.clientX-rect.left)/rect.width));
               if(vid.duration) vid.currentTime=pct*vid.duration;
             });
           })();
