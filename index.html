@@ -3013,35 +3013,41 @@ icppRender();
 
           <!-- centre controls -->
           <div id="proto-ctrl" style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;opacity:0;transition:opacity .25s;pointer-events:none;">
-            <div style="display:flex;align-items:center;justify-content:center;gap:28px;">
+            <div style="display:flex;align-items:center;justify-content:center;gap:32px;">
 
-              <!-- rewind 10s -->
-              <button id="proto-rw" style="background:rgba(0,0,0,.45);backdrop-filter:blur(6px);border:1.5px solid rgba(255,255,255,.18);border-radius:50%;width:52px;height:52px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2px;padding:0;">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                  <path d="M12.5 3a9 9 0 1 0 9 9h-2a7 7 0 1 1-7-7V3z" fill="white"/>
-                  <path d="M12.5 3L8 7.5l4.5 4.5V3z" fill="white"/>
-                </svg>
-                <span style="font-size:8px;color:white;font-family:sans-serif;font-weight:600;letter-spacing:.03em;line-height:1;">10s</span>
-              </button>
-
-              <!-- play / pause -->
-              <button id="proto-pp" style="background:rgba(201,149,42,.9);backdrop-filter:blur(6px);border:none;border-radius:50%;width:66px;height:66px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;box-shadow:0 4px 20px rgba(201,149,42,.4);">
-                <svg id="proto-pause-icon" width="22" height="22" viewBox="0 0 22 22" fill="none">
-                  <rect x="4" y="2" width="5" height="18" rx="1.5" fill="white"/>
-                  <rect x="13" y="2" width="5" height="18" rx="1.5" fill="white"/>
-                </svg>
-                <svg id="proto-play-icon" width="22" height="22" viewBox="0 0 22 22" fill="none" style="display:none;margin-left:3px;">
-                  <path d="M4 2L20 11L4 20V2Z" fill="white"/>
+              <!-- rewind 15s — outline circular arrow, no background -->
+              <button id="proto-rw" style="background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;width:52px;height:52px;filter:drop-shadow(0 1px 3px rgba(0,0,0,.5));">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                  <!-- counterclockwise arc from upper-right to upper-left, ~300° -->
+                  <path d="M 38 15.5 A 16 16 0 1 0 10 15.5" stroke="white" stroke-width="2.4" stroke-linecap="round"/>
+                  <!-- arrowhead at end of arc (upper-left), pointing up-right (ccw direction) -->
+                  <path d="M 10 15.5 L 5.5 10 M 10 15.5 L 16 12" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+                  <!-- number -->
+                  <text x="24" y="30" text-anchor="middle" fill="white" font-size="11" font-weight="700" font-family="-apple-system,BlinkMacSystemFont,Arial,sans-serif">15</text>
                 </svg>
               </button>
 
-              <!-- forward 10s -->
-              <button id="proto-fw" style="background:rgba(0,0,0,.45);backdrop-filter:blur(6px);border:1.5px solid rgba(255,255,255,.18);border-radius:50%;width:52px;height:52px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2px;padding:0;">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                  <path d="M11.5 3a9 9 0 1 1-9 9h2a7 7 0 1 0 7-7V3z" fill="white"/>
-                  <path d="M11.5 3L16 7.5l-4.5 4.5V3z" fill="white"/>
+              <!-- play / pause — dark frosted circle -->
+              <button id="proto-pp" style="background:rgba(0,0,0,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:none;border-radius:50%;width:72px;height:72px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;box-shadow:0 2px 16px rgba(0,0,0,.4);">
+                <svg id="proto-pause-icon" width="26" height="26" viewBox="0 0 26 26" fill="none">
+                  <rect x="5" y="3" width="5.5" height="20" rx="2" fill="white"/>
+                  <rect x="15.5" y="3" width="5.5" height="20" rx="2" fill="white"/>
                 </svg>
-                <span style="font-size:8px;color:white;font-family:sans-serif;font-weight:600;letter-spacing:.03em;line-height:1;">10s</span>
+                <svg id="proto-play-icon" width="26" height="26" viewBox="0 0 26 26" fill="none" style="display:none;margin-left:3px;">
+                  <path d="M5 2L23 13L5 24V2Z" fill="white"/>
+                </svg>
+              </button>
+
+              <!-- forward 15s — outline circular arrow, no background -->
+              <button id="proto-fw" style="background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;width:52px;height:52px;filter:drop-shadow(0 1px 3px rgba(0,0,0,.5));">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                  <!-- clockwise arc from upper-left to upper-right, ~300° -->
+                  <path d="M 10 15.5 A 16 16 0 1 1 38 15.5" stroke="white" stroke-width="2.4" stroke-linecap="round"/>
+                  <!-- arrowhead at end of arc (upper-right), pointing up-left (cw direction) -->
+                  <path d="M 38 15.5 L 42.5 10 M 38 15.5 L 32 12" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+                  <!-- number -->
+                  <text x="24" y="30" text-anchor="middle" fill="white" font-size="11" font-weight="700" font-family="-apple-system,BlinkMacSystemFont,Arial,sans-serif">15</text>
+                </svg>
               </button>
 
             </div>
@@ -3107,10 +3113,10 @@ icppRender();
             });
 
             document.getElementById('proto-rw').addEventListener('click',function(){
-              vid.currentTime=Math.max(0,vid.currentTime-10);
+              vid.currentTime=Math.max(0,vid.currentTime-15);
             });
             document.getElementById('proto-fw').addEventListener('click',function(){
-              vid.currentTime=Math.min(vid.duration||Infinity,vid.currentTime+10);
+              vid.currentTime=Math.min(vid.duration||Infinity,vid.currentTime+15);
             });
 
             // Progress + thumb
