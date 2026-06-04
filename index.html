@@ -3013,40 +3013,38 @@ icppRender();
 
           <!-- centre controls -->
           <div id="proto-ctrl" style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;opacity:0;transition:opacity .25s;pointer-events:none;">
-            <div style="display:flex;align-items:center;justify-content:center;gap:32px;">
+            <div style="display:flex;align-items:center;justify-content:center;gap:28px;">
 
-              <!-- rewind 15s — outline circular arrow, no background -->
-              <button id="proto-rw" style="background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;width:52px;height:52px;filter:drop-shadow(0 1px 3px rgba(0,0,0,.5));">
-                <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                  <!-- counterclockwise arc from upper-right to upper-left, ~300° -->
-                  <path d="M 38 15.5 A 16 16 0 1 0 10 15.5" stroke="white" stroke-width="2.4" stroke-linecap="round"/>
-                  <!-- arrowhead at end of arc (upper-left), pointing up-right (ccw direction) -->
-                  <path d="M 10 15.5 L 5.5 10 M 10 15.5 L 16 12" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-                  <!-- number -->
-                  <text x="24" y="30" text-anchor="middle" fill="white" font-size="11" font-weight="700" font-family="-apple-system,BlinkMacSystemFont,Arial,sans-serif">15</text>
+              <!-- rewind 5s — Group 1321317398 design asset -->
+              <button id="proto-rw" style="background:none;border:none;cursor:pointer;padding:0;width:56px;height:56px;display:flex;align-items:center;justify-content:center;">
+                <svg width="56" height="56" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="12" r="12" transform="matrix(-1 0 0 1 24 0)" fill="#D9D9D9"/>
+                  <path d="M10.5 15.5L6 12L10.5 8.5V15.5Z" stroke="#1E1E1E" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M16 15.5L11.5 12L16 8.5V15.5Z" stroke="#1E1E1E" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </button>
 
-              <!-- play / pause — dark frosted circle -->
-              <button id="proto-pp" style="background:rgba(0,0,0,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:none;border-radius:50%;width:72px;height:72px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;box-shadow:0 2px 16px rgba(0,0,0,.4);">
-                <svg id="proto-pause-icon" width="26" height="26" viewBox="0 0 26 26" fill="none">
-                  <rect x="5" y="3" width="5.5" height="20" rx="2" fill="white"/>
-                  <rect x="15.5" y="3" width="5.5" height="20" rx="2" fill="white"/>
+              <!-- play / pause — Group 1321317399 design asset (pause state uses matching style) -->
+              <button id="proto-pp" style="background:none;border:none;cursor:pointer;padding:0;width:70px;height:70px;display:flex;align-items:center;justify-content:center;">
+                <!-- pause icon (shown while playing) -->
+                <svg id="proto-pause-icon" width="70" height="70" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="12" r="12" fill="#D9D9D9"/>
+                  <rect x="7" y="7" width="3.2" height="10" rx="1.2" fill="#1D1B20"/>
+                  <rect x="13.8" y="7" width="3.2" height="10" rx="1.2" fill="#1D1B20"/>
                 </svg>
-                <svg id="proto-play-icon" width="26" height="26" viewBox="0 0 26 26" fill="none" style="display:none;margin-left:3px;">
-                  <path d="M5 2L23 13L5 24V2Z" fill="white"/>
+                <!-- play icon (shown while paused) — Group 1321317399 -->
+                <svg id="proto-play-icon" width="70" height="70" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none;">
+                  <circle cx="12" cy="12" r="12" fill="#D9D9D9"/>
+                  <path d="M10.2039 16.8553C9.53814 17.2789 8.66699 16.8007 8.66699 16.0116V7.9883C8.66699 7.19921 9.53814 6.72099 10.2039 7.14464L16.5079 11.1563C17.1254 11.5493 17.1254 12.4507 16.5079 12.8436L10.2039 16.8553Z" fill="#1D1B20"/>
                 </svg>
               </button>
 
-              <!-- forward 15s — outline circular arrow, no background -->
-              <button id="proto-fw" style="background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;width:52px;height:52px;filter:drop-shadow(0 1px 3px rgba(0,0,0,.5));">
-                <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                  <!-- clockwise arc from upper-left to upper-right, ~300° -->
-                  <path d="M 10 15.5 A 16 16 0 1 1 38 15.5" stroke="white" stroke-width="2.4" stroke-linecap="round"/>
-                  <!-- arrowhead at end of arc (upper-right), pointing up-left (cw direction) -->
-                  <path d="M 38 15.5 L 42.5 10 M 38 15.5 L 32 12" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-                  <!-- number -->
-                  <text x="24" y="30" text-anchor="middle" fill="white" font-size="11" font-weight="700" font-family="-apple-system,BlinkMacSystemFont,Arial,sans-serif">15</text>
+              <!-- forward 5s — Group 1321317400 design asset -->
+              <button id="proto-fw" style="background:none;border:none;cursor:pointer;padding:0;width:56px;height:56px;display:flex;align-items:center;justify-content:center;">
+                <svg width="56" height="56" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="12" r="12" fill="#D9D9D9"/>
+                  <path d="M13.5 15.5L18 12L13.5 8.5V15.5Z" stroke="#1E1E1E" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M8 15.5L12.5 12L8 8.5V15.5Z" stroke="#1E1E1E" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </button>
 
@@ -3113,10 +3111,10 @@ icppRender();
             });
 
             document.getElementById('proto-rw').addEventListener('click',function(){
-              vid.currentTime=Math.max(0,vid.currentTime-15);
+              vid.currentTime=Math.max(0,vid.currentTime-5);
             });
             document.getElementById('proto-fw').addEventListener('click',function(){
-              vid.currentTime=Math.min(vid.duration||Infinity,vid.currentTime+15);
+              vid.currentTime=Math.min(vid.duration||Infinity,vid.currentTime+5);
             });
 
             // Progress + thumb
