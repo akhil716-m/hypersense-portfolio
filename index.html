@@ -3112,7 +3112,15 @@ icppRender();
               pauseIcon.style.display=''; playIcon.style.display='none';
             });
 
-            ppBtn.addEventListener('click', function(){
+            // Click anywhere on the video screen to toggle play/pause
+            wrap.addEventListener('click', function(e){
+              // Don't fire if the click was on a control button or progress bar
+              if(e.target.closest('#proto-ctrl,#proto-prog-wrap')) return;
+              if(vid.paused){ vid.play(); } else { vid.pause(); }
+            });
+
+            ppBtn.addEventListener('click', function(e){
+              e.stopPropagation();
               if(vid.paused){ vid.play(); } else { vid.pause(); }
             });
 
