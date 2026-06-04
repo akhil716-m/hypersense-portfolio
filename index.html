@@ -3087,10 +3087,11 @@ icppRender();
               },2500);
             }
 
-            // Use the whole MacBook scene as the hover zone so bottom/corner
-            // bezel areas (SVG paths over foreignObject) also trigger controls
-            var mbScene = document.getElementById('mb-scene');
-            var hoverTarget = mbScene || wrap;
+            // Use mb-wrap (tight 900px MacBook container) as hover zone so
+            // bottom bezel SVG paths also trigger controls, without activating
+            // outside the mockup bounds
+            var mbWrap = document.querySelector('#mb-scene .mb-wrap');
+            var hoverTarget = mbWrap || wrap;
 
             hoverTarget.addEventListener('mousemove', showCtrl);
             hoverTarget.addEventListener('mouseenter', showCtrl);
