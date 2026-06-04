@@ -3087,9 +3087,14 @@ icppRender();
               },2500);
             }
 
-            wrap.addEventListener('mousemove', showCtrl);
-            wrap.addEventListener('mouseenter', showCtrl);
-            wrap.addEventListener('mouseleave', function(){
+            // Use the whole MacBook scene as the hover zone so bottom/corner
+            // bezel areas (SVG paths over foreignObject) also trigger controls
+            var mbScene = document.getElementById('mb-scene');
+            var hoverTarget = mbScene || wrap;
+
+            hoverTarget.addEventListener('mousemove', showCtrl);
+            hoverTarget.addEventListener('mouseenter', showCtrl);
+            hoverTarget.addEventListener('mouseleave', function(){
               clearTimeout(hideTimer);
               ctrl.style.opacity='0'; ctrl.style.pointerEvents='none';
               progWrap.style.opacity='0'; progWrap.style.pointerEvents='none';
